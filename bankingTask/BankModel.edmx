@@ -1,0 +1,357 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Bank_DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="BalanceMaster">
+          <Key>
+            <PropertyRef Name="CustomerBankAccountNo" />
+          </Key>
+          <Property Name="CustomerBankAccountNo" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="CustomerIFSCNo" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="MasterAmount" Type="numeric" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="BalanceAmount" Type="numeric" Precision="18" Scale="2" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CreditHistory">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="CreditrBankAccountNo" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="SourceBankAccountNo" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="SourceIFSCNo" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="SourceBankName" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="SourceAccountHolderName" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="CreditAmount" Type="numeric" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CustomerMaster">
+          <Key>
+            <PropertyRef Name="CustomerBankAccountNo" />
+          </Key>
+          <Property Name="CustomerName" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="CustomerType" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Gender" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="CustomerUserName" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="IsEnabled" Type="bit" Nullable="false" />
+          <Property Name="CustomerBankName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="CustomerBankAccountNo" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="CustomerIFSCNo" Type="varchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LinkUserToRole">
+          <Key>
+            <PropertyRef Name="UserCode" />
+            <PropertyRef Name="RoleCode" />
+          </Key>
+          <Property Name="UserCode" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="RoleCode" Type="int" Nullable="false" />
+          <Property Name="RowVer" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+          <Property Name="OnCreatedBy" Type="varchar" MaxLength="10" />
+          <Property Name="OnCreated" Type="datetime" />
+          <Property Name="OnUpdatedBy" Type="varchar" MaxLength="10" />
+          <Property Name="OnUpdated" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Roles">
+          <Key>
+            <PropertyRef Name="RoleCode" />
+          </Key>
+          <Property Name="RoleCode" Type="int" Nullable="false" />
+          <Property Name="RoleName" Type="varchar" MaxLength="50" />
+          <Property Name="IsEnabled" Type="bit" />
+          <Property Name="RowVer" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+          <Property Name="OnCreatedBy" Type="varchar" MaxLength="10" />
+          <Property Name="OnCreated" Type="datetime" />
+          <Property Name="OnUpdatedBy" Type="varchar" MaxLength="10" />
+          <Property Name="OnUpdated" Type="datetime" />
+        </EntityType>
+        <EntityType Name="TellerMaster">
+          <Key>
+            <PropertyRef Name="TellerCode" />
+          </Key>
+          <Property Name="TellerCode" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TellerName" Type="varchar" MaxLength="250" />
+          <Property Name="Gender" Type="varchar" MaxLength="1" />
+          <Property Name="TellerUserName" Type="varchar" MaxLength="10" />
+          <Property Name="Password" Type="varchar" MaxLength="10" />
+          <Property Name="IsEnabled" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TransferHistory">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="CustomerBankAccountNo" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="DestinationBankAccountNo" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="DestinationIFSCNo" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="DestinationBankName" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="DestinationAccountHolderName" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="MasterAmount" Type="numeric" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="TranferAmount" Type="numeric" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="BalanceAmount" Type="numeric" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__LinkUserT__RoleC__3C69FB99">
+          <End Role="Roles" Type="Self.Roles" Multiplicity="1" />
+          <End Role="LinkUserToRole" Type="Self.LinkUserToRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="RoleCode" />
+            </Principal>
+            <Dependent Role="LinkUserToRole">
+              <PropertyRef Name="RoleCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Bank_DBModelStoreContainer">
+          <EntitySet Name="BalanceMaster" EntityType="Self.BalanceMaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CreditHistory" EntityType="Self.CreditHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CustomerMaster" EntityType="Self.CustomerMaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LinkUserToRole" EntityType="Self.LinkUserToRole" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TellerMaster" EntityType="Self.TellerMaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TransferHistory" EntityType="Self.TransferHistory" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__LinkUserT__RoleC__3C69FB99" Association="Self.FK__LinkUserT__RoleC__3C69FB99">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="LinkUserToRole" EntitySet="LinkUserToRole" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Bank_DBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="Bank_DBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="BalanceMasters" EntityType="Bank_DBModel.BalanceMaster" />
+          <EntitySet Name="CreditHistories" EntityType="Bank_DBModel.CreditHistory" />
+          <EntitySet Name="CustomerMasters" EntityType="Bank_DBModel.CustomerMaster" />
+          <EntitySet Name="LinkUserToRoles" EntityType="Bank_DBModel.LinkUserToRole" />
+          <EntitySet Name="Roles" EntityType="Bank_DBModel.Role" />
+          <EntitySet Name="TellerMasters" EntityType="Bank_DBModel.TellerMaster" />
+          <EntitySet Name="TransferHistories" EntityType="Bank_DBModel.TransferHistory" />
+          <AssociationSet Name="FK__LinkUserT__RoleC__3C69FB99" Association="Bank_DBModel.FK__LinkUserT__RoleC__3C69FB99">
+            <End Role="Role" EntitySet="Roles" />
+            <End Role="LinkUserToRole" EntitySet="LinkUserToRoles" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="BalanceMaster">
+          <Key>
+            <PropertyRef Name="CustomerBankAccountNo" />
+          </Key>
+          <Property Name="CustomerBankAccountNo" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="CustomerIFSCNo" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="MasterAmount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="BalanceAmount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+        </EntityType>
+        <EntityType Name="CreditHistory">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="CreditrBankAccountNo" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="SourceBankAccountNo" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="SourceIFSCNo" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="SourceBankName" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="SourceAccountHolderName" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="CreditAmount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="CustomerMaster">
+          <Key>
+            <PropertyRef Name="CustomerBankAccountNo" />
+          </Key>
+          <Property Name="CustomerName" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="CustomerType" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Gender" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="CustomerUserName" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="IsEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="CustomerBankName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CustomerBankAccountNo" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="CustomerIFSCNo" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="LinkUserToRole">
+          <Key>
+            <PropertyRef Name="UserCode" />
+            <PropertyRef Name="RoleCode" />
+          </Key>
+          <Property Name="UserCode" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="RoleCode" Type="Int32" Nullable="false" />
+          <Property Name="RowVer" Type="Binary" Nullable="false" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="OnCreatedBy" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="OnCreated" Type="DateTime" Precision="3" />
+          <Property Name="OnUpdatedBy" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="OnUpdated" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Role" Relationship="Bank_DBModel.FK__LinkUserT__RoleC__3C69FB99" FromRole="LinkUserToRole" ToRole="Role" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="RoleCode" />
+          </Key>
+          <Property Name="RoleCode" Type="Int32" Nullable="false" />
+          <Property Name="RoleName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IsEnabled" Type="Boolean" />
+          <Property Name="RowVer" Type="Binary" Nullable="false" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="OnCreatedBy" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="OnCreated" Type="DateTime" Precision="3" />
+          <Property Name="OnUpdatedBy" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="OnUpdated" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="LinkUserToRoles" Relationship="Bank_DBModel.FK__LinkUserT__RoleC__3C69FB99" FromRole="Role" ToRole="LinkUserToRole" />
+        </EntityType>
+        <EntityType Name="TellerMaster">
+          <Key>
+            <PropertyRef Name="TellerCode" />
+          </Key>
+          <Property Name="TellerCode" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TellerName" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="Gender" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="TellerUserName" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="IsEnabled" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TransferHistory">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="CustomerBankAccountNo" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="DestinationBankAccountNo" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="DestinationIFSCNo" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="DestinationBankName" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="DestinationAccountHolderName" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="MasterAmount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="TranferAmount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="BalanceAmount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <Association Name="FK__LinkUserT__RoleC__3C69FB99">
+          <End Type="Bank_DBModel.Role" Role="Role" Multiplicity="1" />
+          <End Type="Bank_DBModel.LinkUserToRole" Role="LinkUserToRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="RoleCode" />
+            </Principal>
+            <Dependent Role="LinkUserToRole">
+              <PropertyRef Name="RoleCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Bank_DBModelStoreContainer" CdmEntityContainer="Bank_DBEntities">
+          <EntitySetMapping Name="BalanceMasters">
+            <EntityTypeMapping TypeName="Bank_DBModel.BalanceMaster">
+              <MappingFragment StoreEntitySet="BalanceMaster">
+                <ScalarProperty Name="BalanceAmount" ColumnName="BalanceAmount" />
+                <ScalarProperty Name="MasterAmount" ColumnName="MasterAmount" />
+                <ScalarProperty Name="CustomerIFSCNo" ColumnName="CustomerIFSCNo" />
+                <ScalarProperty Name="CustomerBankAccountNo" ColumnName="CustomerBankAccountNo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CreditHistories">
+            <EntityTypeMapping TypeName="Bank_DBModel.CreditHistory">
+              <MappingFragment StoreEntitySet="CreditHistory">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="CreditAmount" ColumnName="CreditAmount" />
+                <ScalarProperty Name="SourceAccountHolderName" ColumnName="SourceAccountHolderName" />
+                <ScalarProperty Name="SourceBankName" ColumnName="SourceBankName" />
+                <ScalarProperty Name="SourceIFSCNo" ColumnName="SourceIFSCNo" />
+                <ScalarProperty Name="SourceBankAccountNo" ColumnName="SourceBankAccountNo" />
+                <ScalarProperty Name="CreditrBankAccountNo" ColumnName="CreditrBankAccountNo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CustomerMasters">
+            <EntityTypeMapping TypeName="Bank_DBModel.CustomerMaster">
+              <MappingFragment StoreEntitySet="CustomerMaster">
+                <ScalarProperty Name="CustomerIFSCNo" ColumnName="CustomerIFSCNo" />
+                <ScalarProperty Name="CustomerBankAccountNo" ColumnName="CustomerBankAccountNo" />
+                <ScalarProperty Name="CustomerBankName" ColumnName="CustomerBankName" />
+                <ScalarProperty Name="IsEnabled" ColumnName="IsEnabled" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="CustomerUserName" ColumnName="CustomerUserName" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="CustomerType" ColumnName="CustomerType" />
+                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LinkUserToRoles">
+            <EntityTypeMapping TypeName="Bank_DBModel.LinkUserToRole">
+              <MappingFragment StoreEntitySet="LinkUserToRole">
+                <ScalarProperty Name="OnUpdated" ColumnName="OnUpdated" />
+                <ScalarProperty Name="OnUpdatedBy" ColumnName="OnUpdatedBy" />
+                <ScalarProperty Name="OnCreated" ColumnName="OnCreated" />
+                <ScalarProperty Name="OnCreatedBy" ColumnName="OnCreatedBy" />
+                <ScalarProperty Name="RowVer" ColumnName="RowVer" />
+                <ScalarProperty Name="RoleCode" ColumnName="RoleCode" />
+                <ScalarProperty Name="UserCode" ColumnName="UserCode" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Roles">
+            <EntityTypeMapping TypeName="Bank_DBModel.Role">
+              <MappingFragment StoreEntitySet="Roles">
+                <ScalarProperty Name="OnUpdated" ColumnName="OnUpdated" />
+                <ScalarProperty Name="OnUpdatedBy" ColumnName="OnUpdatedBy" />
+                <ScalarProperty Name="OnCreated" ColumnName="OnCreated" />
+                <ScalarProperty Name="OnCreatedBy" ColumnName="OnCreatedBy" />
+                <ScalarProperty Name="RowVer" ColumnName="RowVer" />
+                <ScalarProperty Name="IsEnabled" ColumnName="IsEnabled" />
+                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+                <ScalarProperty Name="RoleCode" ColumnName="RoleCode" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TellerMasters">
+            <EntityTypeMapping TypeName="Bank_DBModel.TellerMaster">
+              <MappingFragment StoreEntitySet="TellerMaster">
+                <ScalarProperty Name="IsEnabled" ColumnName="IsEnabled" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="TellerUserName" ColumnName="TellerUserName" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="TellerName" ColumnName="TellerName" />
+                <ScalarProperty Name="TellerCode" ColumnName="TellerCode" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TransferHistories">
+            <EntityTypeMapping TypeName="Bank_DBModel.TransferHistory">
+              <MappingFragment StoreEntitySet="TransferHistory">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="BalanceAmount" ColumnName="BalanceAmount" />
+                <ScalarProperty Name="TranferAmount" ColumnName="TranferAmount" />
+                <ScalarProperty Name="MasterAmount" ColumnName="MasterAmount" />
+                <ScalarProperty Name="DestinationAccountHolderName" ColumnName="DestinationAccountHolderName" />
+                <ScalarProperty Name="DestinationBankName" ColumnName="DestinationBankName" />
+                <ScalarProperty Name="DestinationIFSCNo" ColumnName="DestinationIFSCNo" />
+                <ScalarProperty Name="DestinationBankAccountNo" ColumnName="DestinationBankAccountNo" />
+                <ScalarProperty Name="CustomerBankAccountNo" ColumnName="CustomerBankAccountNo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

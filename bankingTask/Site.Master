@@ -1,0 +1,46 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="bankingTask.Site" %>
+
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+    <title></title>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+    <style>
+        table {
+            width:80%;
+            margin:auto;
+            border-collapse:collapse;
+        }
+
+            table th {
+                color:blueviolet;
+                font-weight:bold;
+
+            }
+
+        th, td {
+            padding:6px;
+            border:1px solid silver;
+             color:black;
+        }
+    </style>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <table style="float:right;background-color:lightgray">
+            <tr><th>Role:</th><th><asp:Label ID="lblRole" runat="server"></asp:Label></th><th>User:</th><th><asp:Label ID="lblUser" runat="server"></asp:Label></th><th>Logout:</th><th><a href="Login.aspx">Log out</a></th></tr>
+        </table>
+        <ul class="sub-menu">
+                                <li id="liCustomer" runat="server"><a href="Customer.aspx">Customer</a></li>
+                                <li id="liTransaction" runat="server"><a href="Transaction.aspx">Transaction</a></li>
+                            </ul>
+        <hr />
+        <div>
+            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>
+    </form>
+</body>
+</html>
